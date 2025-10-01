@@ -1,0 +1,29 @@
+# Default to native gcc if CC not set
+CC ?= gcc
+
+# Executable names
+EXECS = input
+
+# Source files (assumes each executable has a same-name .c file)
+SRCS = $(EXECS:%=%.c)
+
+# Object files
+OBJS = $(SRCS:.c=.o)
+
+# Default target: build all executables
+all: $(EXECS)
+
+# Pattern rule to build any executable from its .o
+%: %.o
+	$(CC) $^ -o $@
+
+# Pattern rule to compile any .c to .o
+%.o: %.c
+	$(CC) -c $< -o $@ -g -Wall
+
+# Clean everything
+clean:
+	rm -f *.o $(EXECS)
+
+# Fresh build
+fresh: clean all
